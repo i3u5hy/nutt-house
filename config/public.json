@@ -1,26 +1,96 @@
 {
-  "brand": { "siteName": "Nutt House" },
+  "brand": {
+    "siteName": "Nutt House",
+    "contactEmail": "hello@nutt-house.au"
+  },
+  "emails": {
+    "slushies": "slushies@nutt-house.au",
+    "printing": "3dprinting@nutt-house.au",
+    "admin": "admin@nutt-house.au"
+  },
   "assets": {
     "mainFolder": "/assets/main",
     "slushiesFolder": "/assets/slushies",
     "printingFolder": "/assets/3d",
     "bgCount": 6
   },
+  "shop": {
+    "currency": "AUD",
+    "originPostcode": "XXXX",
+    "combineRules": {
+      "maxCombineWeight_g": 500,
+      "maxCombineDims_cm": {
+        "l": 35,
+        "w": 25,
+        "h": 5
+      }
+    },
+    "shippingServices": [
+      "PARCEL_POST",
+      "EXPRESS_POST"
+    ],
+    "checkoutMode": "email"
+  },
   "features": {
-    "useBackendNotifications": false,
+    "discordNotify": true,
+    "emailNotify": true,
     "liveShipping": false,
     "payments": false
   },
   "social": {
     "facebookPageUrl": "https://www.facebook.com/CreativeSlushies",
+    "tiktokUrl": "",
+    "instagramUrl": "",
+    "youtubeUrl": "",
     "showFacebookTimeline": true
   },
   "kidsZone": {
     "games": [
-      { "title": "Target Tap", "type": "built-in", "file": "/games/target-tap.html", "icon": "🎯" }
+      {
+        "title": "Target Tap",
+        "type": "built-in",
+        "file": "/games/target-tap.html",
+        "icon": "\ud83c\udfaf"
+      },
+      {
+        "title": "Typing Club",
+        "type": "external",
+        "url": "https://www.typingclub.com/",
+        "icon": "\u2328\ufe0f"
+      }
     ],
     "schoolTools": [
-      { "title": "Typing Club", "url": "https://www.typingclub.com/", "icon": "⌨️" }
+      {
+        "title": "Math Playground",
+        "url": "https://www.mathplayground.com/",
+        "icon": "\u2795"
+      },
+      {
+        "title": "ABC Education",
+        "url": "https://education.abc.net.au/",
+        "icon": "\ud83d\udcda"
+      }
     ]
+  },
+  "homework": {
+    "students": [
+      "Bianca",
+      "Kailyn",
+      "Amelia",
+      "Ethan"
+    ],
+    "links": {
+      "Family Shared": "#"
+    }
+  },
+  "notifications": {
+    "orders": {
+      "emailOnPaidOnly": true,
+      "discordOnPaidOnly": true
+    },
+    "quotes": {
+      "email": true,
+      "discord": true
+    }
   }
 }
