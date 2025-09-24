@@ -1,106 +1,33 @@
 {
-  // --- General site info ---
   "brand": {
-    "siteName": "Nutt House",           // Default name shown in headers
-    "contactEmail": "hello@nutt-house.au" // General contact email
+    "siteName": "Nutt House"
   },
-
-  // --- Email addresses used by site features ---
-  "emails": {
-    "slushies": "slushies@nutt-house.au", // Booking inquiries for Creative Slushies
-    "printing": "3dprinting@nutt-house.au", // Orders/quotes for 3D Printing
-    "admin": "admin@nutt-house.au"          // Admin notifications (fallback)
-  },
-
-  // --- Asset folders & backgrounds ---
   "assets": {
-    "mainFolder": "/assets/main",        // Images & logo for homepage + shared
-    "slushiesFolder": "/assets/slushies",// Images & logo for Creative Slushies page
-    "printingFolder": "/assets/3d",      // Images & logo for 3D Printing shop
-    "bgCount": 6                         // Number of background images in each folder
+    "mainFolder": "/assets/main",
+    "slushiesFolder": "/assets/slushies",
+    "printingFolder": "/assets/3d",
+    "bgCount": 6
   },
-
-  // --- 3D Printing shop config ---
-  "shop": {
-    "currency": "AUD",                   // Display currency
-    "originPostcode": "XXXX",            // AusPost origin postcode for shipping calc
-    "combineRules": {                    // Rules for combining postage
-      "maxCombineWeight_g": 500,         // Max combined weight for small parcel
-      "maxCombineDims_cm": {             // Max dimensions for combined items
-        "l": 35,
-        "w": 25,
-        "h": 5
-      }
-    },
-    "shippingServices": [                // AusPost services to offer
-      "PARCEL_POST",
-      "EXPRESS_POST"
-    ],
-    "checkoutMode": "email"              // "email" = send order via email, "online" = full payment
-  },
-
-  // --- Feature toggles ---
   "features": {
-    "discordNotify": true,  // Send Discord webhook notifications
-    "emailNotify": true,    // Send email notifications
-    "liveShipping": false,  // Use live AusPost API (true) or static pricing (false)
-    "payments": false       // Enable/disable payments (false = manual/email only)
+    "useBackendNotifications": false,
+    "liveShipping": false,
+    "payments": false
   },
-
-  // --- Social media links for footer & embeds ---
-  "social": {
-    "facebookPageUrl": "https://www.facebook.com/CreativeSlushies", // Slushies FB page
-    "tiktokUrl": "",         // TikTok link (if used)
-    "instagramUrl": "",      // Instagram link (if used)
-    "youtubeUrl": "",        // YouTube link (if used)
-    "showFacebookTimeline": true // Show FB posts on the Creative Slushies page
-  },
-
-  // --- Kids Zone games & school tools ---
   "kidsZone": {
     "games": [
       {
-        "title": "Target Tap",                // Local mini-game
+        "title": "Target Tap",
         "type": "built-in",
         "file": "/games/target-tap.html",
         "icon": "🎯"
-      },
-      {
-        "title": "Typing Club",               // External game link
-        "type": "external",
-        "url": "https://www.typingclub.com/",
-        "icon": "⌨️"
       }
     ],
     "schoolTools": [
       {
-        "title": "Math Playground",           // External learning resource
-        "url": "https://www.mathplayground.com/",
-        "icon": "➕"
-      },
-      {
-        "title": "ABC Education",             // Australian education portal
-        "url": "https://education.abc.net.au/",
-        "icon": "📚"
+        "title": "Typing Club",
+        "url": "https://www.typingclub.com/",
+        "icon": "⌨️"
       }
     ]
-  },
-
-  // --- Notifications (email + Discord) ---
-  "notifications": {
-    "discord": {
-      "main":    "https://discord.com/api/webhooks/1420400466268782766/EkD8IO0-iP0e9D67UPGfMp5zv1KJbm4czzYJxoL9cpGfHBOCH3FjYUypm7x0Zs2632bK",      // General site events
-      "slushies":"https://discord.com/api/webhooks/1420400333619855466/xADEbOEMqEFZiOPB_WPFNGsRYbUMG7IWI9PteuK9-I336BA7eycZfkmg1o467GJ9rbej",  // New booking
-      "prints":  "https://discord.com/api/webhooks/1420398724664000625/Hh4OgxQya1BW35ndy5yd1a5ULDi1rvGS_bkGJjc_5xZDFCjFfOQ34l6pZKwf9ctAJYd2",    // 3D shop order
-      "portal":  "https://discord.com/api/webhooks/1420400253135355975/2iqZNHIrOrzFW_R1sa7T8O16qcQhZGgWGf5Dv-5NEZ9-c6hDN2aNU11fgH1TFsZvcQaP"     // Login attempts
-    },
-    "orders": {
-      "emailOnPaidOnly": true,     // Only send emails when order is paid
-      "discordOnPaidOnly": true    // Only send Discord notifications when paid
-    },
-    "quotes": {
-      "email": true,               // Send quote requests to email
-      "discord": true              // Send quote requests to Discord too
-    }
   }
 }
