@@ -1,96 +1,106 @@
 {
+  // --- General site info ---
   "brand": {
-    "siteName": "Nutt House",
-    "contactEmail": "hello@nutt-house.au"
+    "siteName": "Nutt House",           // Default name shown in headers
+    "contactEmail": "hello@nutt-house.au" // General contact email
   },
+
+  // --- Email addresses used by site features ---
   "emails": {
-    "slushies": "slushies@nutt-house.au",
-    "printing": "3dprinting@nutt-house.au",
-    "admin": "admin@nutt-house.au"
+    "slushies": "slushies@nutt-house.au", // Booking inquiries for Creative Slushies
+    "printing": "3dprinting@nutt-house.au", // Orders/quotes for 3D Printing
+    "admin": "admin@nutt-house.au"          // Admin notifications (fallback)
   },
+
+  // --- Asset folders & backgrounds ---
   "assets": {
-    "mainFolder": "/assets/main",
-    "slushiesFolder": "/assets/slushies",
-    "printingFolder": "/assets/3d",
-    "bgCount": 6
+    "mainFolder": "/assets/main",        // Images & logo for homepage + shared
+    "slushiesFolder": "/assets/slushies",// Images & logo for Creative Slushies page
+    "printingFolder": "/assets/3d",      // Images & logo for 3D Printing shop
+    "bgCount": 6                         // Number of background images in each folder
   },
+
+  // --- 3D Printing shop config ---
   "shop": {
-    "currency": "AUD",
-    "originPostcode": "XXXX",
-    "combineRules": {
-      "maxCombineWeight_g": 500,
-      "maxCombineDims_cm": {
+    "currency": "AUD",                   // Display currency
+    "originPostcode": "XXXX",            // AusPost origin postcode for shipping calc
+    "combineRules": {                    // Rules for combining postage
+      "maxCombineWeight_g": 500,         // Max combined weight for small parcel
+      "maxCombineDims_cm": {             // Max dimensions for combined items
         "l": 35,
         "w": 25,
         "h": 5
       }
     },
-    "shippingServices": [
+    "shippingServices": [                // AusPost services to offer
       "PARCEL_POST",
       "EXPRESS_POST"
     ],
-    "checkoutMode": "email"
+    "checkoutMode": "email"              // "email" = send order via email, "online" = full payment
   },
+
+  // --- Feature toggles ---
   "features": {
-    "discordNotify": true,
-    "emailNotify": true,
-    "liveShipping": false,
-    "payments": false
+    "discordNotify": true,  // Send Discord webhook notifications
+    "emailNotify": true,    // Send email notifications
+    "liveShipping": false,  // Use live AusPost API (true) or static pricing (false)
+    "payments": false       // Enable/disable payments (false = manual/email only)
   },
+
+  // --- Social media links for footer & embeds ---
   "social": {
-    "facebookPageUrl": "https://www.facebook.com/CreativeSlushies",
-    "tiktokUrl": "",
-    "instagramUrl": "",
-    "youtubeUrl": "",
-    "showFacebookTimeline": true
+    "facebookPageUrl": "https://www.facebook.com/CreativeSlushies", // Slushies FB page
+    "tiktokUrl": "",         // TikTok link (if used)
+    "instagramUrl": "",      // Instagram link (if used)
+    "youtubeUrl": "",        // YouTube link (if used)
+    "showFacebookTimeline": true // Show FB posts on the Creative Slushies page
   },
+
+  // --- Kids Zone games & school tools ---
   "kidsZone": {
     "games": [
       {
-        "title": "Target Tap",
+        "title": "Target Tap",                // Local mini-game
         "type": "built-in",
         "file": "/games/target-tap.html",
-        "icon": "\ud83c\udfaf"
+        "icon": "🎯"
       },
       {
-        "title": "Typing Club",
+        "title": "Typing Club",               // External game link
         "type": "external",
         "url": "https://www.typingclub.com/",
-        "icon": "\u2328\ufe0f"
+        "icon": "⌨️"
       }
     ],
     "schoolTools": [
       {
-        "title": "Math Playground",
+        "title": "Math Playground",           // External learning resource
         "url": "https://www.mathplayground.com/",
-        "icon": "\u2795"
+        "icon": "➕"
       },
       {
-        "title": "ABC Education",
+        "title": "ABC Education",             // Australian education portal
         "url": "https://education.abc.net.au/",
-        "icon": "\ud83d\udcda"
+        "icon": "📚"
       }
     ]
   },
-  "homework": {
-    "students": [
-      "Bianca",
-      "Kailyn",
-      "Amelia",
-      "Ethan"
-    ],
-    "links": {
-      "Family Shared": "#"
-    }
-  },
+
+  // --- Notifications (email + Discord) ---
   "notifications": {
+    "discord": {
+      "main":    "https://discord.com/api/webhooks/1420400466268782766/EkD8IO0-iP0e9D67UPGfMp5zv1KJbm4czzYJxoL9cpGfHBOCH3FjYUypm7x0Zs2632bK",      // General site events
+      "slushies":"https://discord.com/api/webhooks/1420400333619855466/xADEbOEMqEFZiOPB_WPFNGsRYbUMG7IWI9PteuK9-I336BA7eycZfkmg1o467GJ9rbej",  // New booking
+      "prints":  "https://discord.com/api/webhooks/1420398724664000625/Hh4OgxQya1BW35ndy5yd1a5ULDi1rvGS_bkGJjc_5xZDFCjFfOQ34l6pZKwf9ctAJYd2",    // 3D shop order
+      "portal":  "https://discord.com/api/webhooks/1420400253135355975/2iqZNHIrOrzFW_R1sa7T8O16qcQhZGgWGf5Dv-5NEZ9-c6hDN2aNU11fgH1TFsZvcQaP"     // Login attempts
+    },
     "orders": {
-      "emailOnPaidOnly": true,
-      "discordOnPaidOnly": true
+      "emailOnPaidOnly": true,     // Only send emails when order is paid
+      "discordOnPaidOnly": true    // Only send Discord notifications when paid
     },
     "quotes": {
-      "email": true,
-      "discord": true
+      "email": true,               // Send quote requests to email
+      "discord": true              // Send quote requests to Discord too
     }
   }
 }
