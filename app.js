@@ -18,7 +18,6 @@ function initHeaderFooter(){
       <a href="/kids.html" class="badge">Kids Zone</a>
       <a href="/3d.html" class="badge">3D Printing</a>
       <a href="/slushies.html" class="badge">Creative Slushies</a>
-      <a href="/admin.html" class="badge">Admin</a>
     </div>
   </nav>`;
   if(f) f.innerHTML = `<footer class="footer">© <span id="year"></span> Nutt House • Made with 💙</footer>`;
