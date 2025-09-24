@@ -1,7 +1,5 @@
 {
-  "brand": {
-    "siteName": "Nutt House"
-  },
+  "brand": { "siteName": "Nutt House" },
   "assets": {
     "mainFolder": "/assets/main",
     "slushiesFolder": "/assets/slushies",
@@ -13,21 +11,16 @@
     "liveShipping": false,
     "payments": false
   },
+  "social": {
+    "facebookPageUrl": "https://www.facebook.com/CreativeSlushies",
+    "showFacebookTimeline": true
+  },
   "kidsZone": {
     "games": [
-      {
-        "title": "Target Tap",
-        "type": "built-in",
-        "file": "/games/target-tap.html",
-        "icon": "🎯"
-      }
+      { "title": "Target Tap", "type": "built-in", "file": "/games/target-tap.html", "icon": "🎯" }
     ],
     "schoolTools": [
-      {
-        "title": "Typing Club",
-        "url": "https://www.typingclub.com/",
-        "icon": "⌨️"
-      }
+      { "title": "Typing Club", "url": "https://www.typingclub.com/", "icon": "⌨️" }
     ]
   }
 }
