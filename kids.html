@@ -1,0 +1,20 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kids Zone — Nutt House</title><link rel="stylesheet" href="/styles.css"></head>
+<body><div class="container"><div id="header"></div>
+<header class="hero"><div class="inner"><div class="kicker">Have fun</div><h2>Kids Zone</h2>
+<p class="subtitle">Mini‑games and school‑safe links.</p></div></header>
+<section class="grid" id="kidsGames"></section>
+<section class="grid" id="kidsTools"></section>
+<div id="footer"></div></div>
+<script src="/app.js"></script>
+<script>
+async function initKids(){
+  const cfg=await loadConfig(); setRandomBG(cfg.assets.mainFolder,cfg.assets.bgCount||6);
+  const G=cfg.kidsZone?.games||[], T=cfg.kidsZone?.schoolTools||[];
+  const g=document.getElementById('kidsGames'), t=document.getElementById('kidsTools');
+  g.innerHTML = G.map(x=>`<div class='card'><h3>${x.icon||'🎮'} ${x.title}</h3><p>${x.type==='built-in'?'Built-in game':'External link'}</p><a class='btn' ${x.type==='built-in'?'href="'+x.file+'"':'href="'+x.url+'" target="_blank" rel="noopener"'}>Open</a></div>`).join('');
+  t.innerHTML = T.map(x=>`<div class='card'><h3>${x.icon||'🔗'} ${x.title}</h3><a class='btn' href='${x.url}' target='_blank' rel='noopener'>Open</a></div>`).join('');
+}
+document.addEventListener('DOMContentLoaded', initKids);
+</script></body></html>

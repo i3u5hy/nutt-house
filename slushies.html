@@ -1,0 +1,64 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Creative Slushies — Nutt House</title><link rel="stylesheet" href="/styles.css"></head>
+<body><div class="container"><div id="header"></div>
+<header class="hero"><div class="inner"><div class="kicker">Events</div><h2>Creative Slushies</h2>
+<p class="subtitle">Book us for markets, fairs and parties — flavours, packages, gallery & latest posts.</p></div></header>
+<section class="grid">
+  <div class="card"><h3>Flavours</h3><p id="flavours">Blue Raspberry • Cola • Lime • Strawberry • Mango • Grape</p></div>
+  <div class="card"><h3>Packages</h3><p>Small party (up to 50 serves) • School fair (100–300) • Market day (300+)</p></div>
+  <div class="card"><h3>Book Us</h3>
+    <form id="slushiesBookForm">
+      <label>Name</label><input name="name" required>
+      <label>Email</label><input name="email" type="email" required>
+      <label>Phone</label><input name="phone" required>
+      <div class="row">
+        <div style="flex:1"><label>Event Date</label><input name="date" type="date" required></div>
+        <div style="flex:1"><label>Estimated Serves</label><input name="serves" type="number" min="10" step="10"></div>
+      </div>
+      <label>Details</label><textarea name="details" rows="4" placeholder="Location, power access, flavours, notes"></textarea>
+      <button class="btn" type="submit">Send Booking Request</button>
+    </form>
+    <p class="badge">Sends to <span id="slEmail"></span> (and Discord if enabled).</p>
+  </div>
+</section>
+<section class="card">
+  <h3>Gallery</h3><div id="slushiesGallery" class="gallery"></div>
+  <p class="badge">Add images to <code>/assets/slushies/gallery/</code></p>
+</section>
+<section class="card" id="fbWrap" style="display:none">
+  <h3>Latest from Facebook</h3>
+  <div id="fb-root"></div>
+  <div class="fb-page" data-href="" data-tabs="timeline" data-width="500" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false"></div>
+  <p><a id="fbLink" class="btn secondary" href="#" target="_blank" rel="noopener">Open our Facebook</a></p>
+</section>
+<div id="footer"></div></div>
+<script src="/app.js"></script>
+<script>
+loadConfig().then(cfg=>{
+  setRandomBG(cfg.assets.slushiesFolder,cfg.assets.bgCount||6);
+  document.getElementById('slEmail').textContent = cfg.emails.slushies;
+  const g=document.getElementById('slushiesGallery');
+  const imgs=[1,2,3,4].map(i=>`${cfg.assets.slushiesFolder}/gallery/img${i}.jpg`);
+  g.innerHTML = imgs.map(src=>`<img src="${src}" alt="">`).join('');
+  if(cfg.social && cfg.social.showFacebookTimeline && cfg.social.facebookPageUrl){
+    document.getElementById('fbWrap').style.display='block';
+    document.querySelector('.fb-page').setAttribute('data-href', cfg.social.facebookPageUrl);
+    document.getElementById('fbLink').href = cfg.social.facebookPageUrl;
+    const s=document.createElement('script'); s.async=true; s.defer=true; s.crossOrigin='anonymous';
+    s.src='https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0'; document.body.appendChild(s);
+  }
+  const f=document.getElementById('slushiesBookForm');
+  f.addEventListener('submit', e=>{
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(f).entries());
+    const body = encodeURIComponent(`Name: ${data.name}
+Email: ${data.email}
+Phone: ${data.phone}
+Date: ${data.date}
+Serves: ${data.serves||''}
+Details: ${data.details||''}`);
+    window.location.href = `mailto:${cfg.emails.slushies}?subject=Slushies Booking Request&body=${body}`;
+  });
+});
+</script></body></html>

@@ -1,0 +1,87 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3D Printing — Nutt House</title><link rel="stylesheet" href="/styles.css"></head>
+<body><div class="container"><div id="header"></div>
+<header class="hero"><div class="inner"><div class="kicker">Makerspace</div><h2>3D Printing Shop</h2>
+<p class="subtitle">Browse stock & request custom prints. Shipping and payments will be added after deploy.</p></div></header>
+<section><div id="products" class="grid"></div></section>
+<section class="card">
+  <h3>Your Cart</h3>
+  <table class="table" id="cartTable">
+    <thead><tr><th>Item</th><th>Qty</th><th class="right">Price (AUD)</th></tr></thead>
+    <tbody></tbody>
+    <tfoot><tr><th colspan="2">Total</th><th class="right" id="total">$0.00</th></tr></tfoot>
+  </table>
+  <div class="row" style="margin-top:10px">
+    <button class="btn secondary" id="clearBtn">Clear</button>
+    <button class="btn" id="checkoutBtn">Checkout (Email for now)</button>
+  </div>
+  <p class="badge">Live shipping + payments will be enabled after we connect the backend.</p>
+</section>
+<section class="card">
+  <h3>Custom Print — Get a Quote</h3>
+  <form id="quoteForm">
+    <div class="row">
+      <div style="flex:1"><label>Name</label><input name="name" required></div>
+      <div style="flex:1"><label>Email</label><input type="email" name="email" required></div>
+    </div>
+    <div class="row">
+      <div style="flex:1"><label>Phone</label><input name="phone" required></div>
+      <div style="flex:1"><label>Material</label><select name="material"><option>PLA</option><option>PETG</option><option>ASA</option><option>TPU</option></select></div>
+    </div>
+    <label>Colour</label><input name="colour" placeholder="e.g., Black">
+    <label>Quantity</label><input name="qty" type="number" min="1" value="1">
+    <label>Size / Notes</label><textarea name="notes" rows="4" placeholder="Approx size (L×W×H), finish, deadlines"></textarea>
+    <button class="btn" type="submit">Request Quote</button>
+  </form>
+  <p class="badge">Sends to <span id="printEmail"></span> (and Discord if enabled).</p>
+  <div class="notice" style="margin-top:10px">
+    <strong>Price guide (ballpark):</strong> Setup $5 • Machine time $7.50/hr • Material: PLA $0.06/g, PETG $0.08/g, ASA $0.10/g, TPU $0.12/g • Colour change $2 • Finishing $5/10m • Rush +20% • Bulk: -10% (5+), -15% (10+).
+  </div>
+</section>
+<div id="footer"></div></div>
+<script src="/app.js"></script>
+<script>
+const CART_KEY='nh-cart';
+function getCart(){ try{return JSON.parse(localStorage.getItem(CART_KEY)||'[]')}catch{return[]} }
+function saveCart(v){ localStorage.setItem(CART_KEY, JSON.stringify(v)); }
+function addToCart(item){ const c=getCart(); const i=c.find(x=>x.id===item.id); if(i){i.qty+=1;} else {c.push({...item, qty:1});} saveCart(c); renderCart(); }
+function clearCart(){ localStorage.removeItem(CART_KEY); renderCart(); }
+function renderCart(){
+  const c=getCart(); const tb=document.querySelector('#cartTable tbody'); tb.innerHTML=''; let sum=0;
+  c.forEach(it=>{ const line=it.price*it.qty; sum+=line; tb.innerHTML+=`<tr><td>${it.name}</td><td>${it.qty}</td><td class='right'>$${line.toFixed(2)}</td></tr>`; });
+  document.getElementById('total').textContent = '$'+sum.toFixed(2);
+}
+async function loadProducts(){
+  const cfg = await loadConfig();
+  setRandomBG(cfg.assets.printingFolder, cfg.assets.bgCount||6);
+  document.getElementById('printEmail').textContent = cfg.emails.printing;
+  const data = await fetch('/products.json').then(r=>r.json());
+  const wrap=document.getElementById('products'); wrap.innerHTML='';
+  data.forEach(p=>{
+    const sold=p.stock<=0;
+    const el=document.createElement('div'); el.className='card';
+    el.innerHTML = `
+      <img src="${p.image||'https://picsum.photos/seed/'+p.id+'/640/360'}" class="img" alt="">
+      <h3>${p.name}</h3><p>${p.desc}</p>
+      <div class="row"><span class="badge">${(p.materials||[]).join(', ')}</span><span class="badge">${sold?'Sold Out':'Stock: '+p.stock}</span></div>
+      <div class="row"><span class="badge">$${p.price.toFixed(2)}</span>
+        <button class="btn ${sold?'disabled':''}" ${sold?'disabled':''} id="add-${p.id}">Add to Cart</button></div>
+      <div class="row">
+        <span class="badge">Weight: ${p.weight_g||0} g</span>
+        <span class="badge">Size: ${p.dims_cm.l}×${p.dims_cm.w}×${p.dims_cm.h} cm</span>
+        <span class="badge">${p.combinable?'Combinable':'Ships alone'}</span>
+      </div>`;
+    wrap.appendChild(el);
+    const btn=el.querySelector('#add-'+p.id); if(btn) btn.addEventListener('click', ()=> addToCart({id:p.id,name:p.name,price:p.price}));
+  });
+  renderCart();
+  document.getElementById('clearBtn').addEventListener('click', clearCart);
+  document.getElementById('checkoutBtn').addEventListener('click', ()=>{
+    const cfg=window.NHCFG||{}; const items=getCart(); if(!items.length){alert('Cart is empty');return;}
+    const body=encodeURIComponent(items.map(i=>`${i.name} x${i.qty} - $${(i.price*i.qty).toFixed(2)}`).join('\n'));
+    window.location.href = `mailto:${cfg.emails.printing}?subject=3D Shop Order (Email checkout placeholder)&body=${body}`;
+  });
+}
+document.addEventListener('DOMContentLoaded', loadProducts);
+</script></body></html>

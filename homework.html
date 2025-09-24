@@ -1,0 +1,18 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Homework — Nutt House</title><meta name="robots" content="noindex"><link rel="stylesheet" href="/styles.css"></head>
+<body><div class="container"><div id="header"></div>
+<header class="hero"><div class="inner"><div class="kicker">Private</div><h2>Homework & Schoolwork</h2>
+<p class="subtitle">Upload and access schoolwork here (behind login).</p></div></header>
+<section class="grid" id="hw"></section>
+<div id="footer"></div></div>
+<script src="/app.js"></script>
+<script>
+loadConfig().then(cfg=>{
+  setRandomBG(cfg.assets.mainFolder,cfg.assets.bgCount||6);
+  const names = cfg.homework?.students || ["Bianca","Kailyn","Amelia","Ethan"];
+  const links = cfg.homework?.links || {};
+  const el = document.getElementById('hw');
+  el.innerHTML = names.map(n=>`<div class="card"><h3>${n}</h3><p>Google Drive folder</p><a class="btn" href="${links[n]||'#'}" target="_blank" rel="noopener">Open Folder</a></div>`).join('') + `<div class="card"><h3>Family Shared</h3><p>Common docs</p><a class="btn" href="${links['Family Shared']||'#'}" target="_blank" rel="noopener">Open Folder</a></div>`;
+});
+</script></body></html>

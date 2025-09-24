@@ -1,0 +1,66 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin — Nutt House</title><meta name="robots" content="noindex"><link rel="stylesheet" href="/styles.css"></head>
+<body><div class="container"><div id="header"></div>
+<header class="hero"><div class="inner"><div class="kicker">Private</div><h2>Admin Dashboard</h2>
+<p class="subtitle">Edit 3D shop products (JSON). Slushies gallery is folder-driven; optional uploader can be added later.</p></div></header>
+<section class="card">
+  <h3>Products</h3>
+  <div class="row">
+    <input type="file" id="file" accept="application/json">
+    <button class="btn" onclick="downloadCurrent()">Download current products.json</button>
+    <button class="btn" onclick="addRow()">Add Product</button>
+  </div>
+  <table class="table" id="ptable">
+    <thead>
+      <tr><th>ID</th><th>Name</th><th>Description</th><th>Price</th><th>Stock</th><th>Materials</th><th>Image URL</th></tr>
+      <tr><th>Weight (g)</th><th colspan="2">Dims (L×W×H cm)</th><th>Combinable</th><th colspan="3"></th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <div class="row" style="margin-top:10px">
+    <button class="btn" onclick="exportJSON()">Export JSON</button>
+    <span class="badge">Upload exported file to your repo as <strong>/products.json</strong></span>
+  </div>
+  <p class="notice">Live save requires a backend (Cloudflare Worker) — coming after deploy.</p>
+</section>
+<div id="footer"></div></div>
+<script src="/app.js"></script>
+<script>
+let products=[];
+async function init(){
+  setTimeout(async ()=>{ const cfg=await loadConfig(); setRandomBG(cfg.assets.mainFolder,cfg.assets.bgCount||6); },0);
+  try{ products=await fetch('/products.json').then(r=>r.json()); }catch{ products=[]; }
+  render();
+}
+function rowHTML(p,i){
+  return `<tr>
+    <td><input value="${p.id}" onchange="products[${i}].id=this.value"></td>
+    <td><input value="${p.name}" onchange="products[${i}].name=this.value"></td>
+    <td><input value="${p.desc}" onchange="products[${i}].desc=this.value"></td>
+    <td><input type="number" step="0.01" value="${p.price}" onchange="products[${i}].price=parseFloat(this.value)"></td>
+    <td><input type="number" value="${p.stock}" onchange="products[${i}].stock=parseInt(this.value)"></td>
+    <td><input value="${(p.materials||[]).join(', ')}" onchange="products[${i}].materials=this.value.split(',').map(s=>s.trim()).filter(Boolean)"></td>
+    <td><input value="${p.image||''}" onchange="products[${i}].image=this.value"></td>
+  </tr>
+  <tr>
+    <td><input type="number" value="${p.weight_g||0}" onchange="products[${i}].weight_g=parseInt(this.value)"></td>
+    <td><input type="number" value="${p.dims_cm?.l||0}" onchange="products[${i}].dims_cm.l=parseFloat(this.value)"></td>
+    <td><input type="number" value="${p.dims_cm?.w||0}" onchange="products[${i}].dims_cm.w=parseFloat(this.value)"></td>
+    <td>
+      <select onchange="products[${i}].combinable=this.value==='true'">
+        <option value="true" ${p.combinable?'selected':''}>Yes</option>
+        <option value="false" ${!p.combinable?'selected':''}>No</option>
+      </select>
+    </td>
+    <td colspan="3"><button class="btn danger" onclick="delRow(${i})">Delete</button></td>
+  </tr>`;
+}
+function render(){ const tbody=document.querySelector('#ptable tbody'); tbody.innerHTML=''; products.forEach((p,i)=>{ if(!p.dims_cm) p.dims_cm={l:0,w:0,h:0}; tbody.innerHTML+=rowHTML(p,i); }); }
+function addRow(){ products.push({id:'',name:'',desc:'',price:0,stock:0,materials:[],image:'',weight_g:0,dims_cm:{l:0,w:0,h:0},combinable:true}); render(); }
+function delRow(i){ products.splice(i,1); render(); }
+function exportJSON(){ const blob=new Blob([JSON.stringify(products,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='products.json'; a.click(); }
+function downloadCurrent(){ window.open('/products.json','_blank'); }
+document.getElementById('file').addEventListener('change', async e=>{ const file=e.target.files[0]; if(!file) return; const text=await file.text(); try{ products=JSON.parse(text); render(); }catch{ alert('Invalid JSON'); } });
+document.addEventListener('DOMContentLoaded', init);
+</script></body></html>

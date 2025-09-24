@@ -1,0 +1,14 @@
+<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Target Tap</title><link rel='stylesheet' href='/styles.css'></head>
+<body><div class='container'><h2>Target Tap</h2><canvas id='c' width='520' height='280' class='img'></canvas>
+<div class='row' style='margin-top:10px'><button class='btn' id='start'>Start</button><span class='badge' id='s'>Score: 0</span><span class='badge' id='t'>Time: 30</span></div>
+<p class='badge'>Back to <a href='/kids.html'>Kids Zone</a></p></div>
+<script>
+let ctx, x=50, y=50, r=16, vx=3, vy=2, score=0, t=30, running=false, loop;
+const cnv=document.getElementById('c'); ctx=cnv.getContext('2d'); draw();
+cnv.addEventListener('click', e=>{ if(!running) return; const rect=cnv.getBoundingClientRect(); const mx=e.clientX-rect.left, my=e.clientY-rect.top; const d=Math.hypot(mx-x,my-y);
+ if(d<=r){ score++; document.getElementById('s').textContent='Score: '+score; r=Math.max(10,r-1); vx*=1.05; vy*=1.05; }});
+function draw(){ ctx.clearRect(0,0,cnv.width,cnv.height); ctx.fillStyle='#0b1220'; ctx.fillRect(0,0,cnv.width,cnv.height); ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fillStyle='#8be9fd'; ctx.fill(); ctx.lineWidth=4; ctx.strokeStyle='#ff79c6'; ctx.stroke(); }
+function tick(){ x+=vx; y+=vy; if(x<r||x>cnv.width-r) vx*=-1; if(y<r||y>cnv.height-r) vy*=-1; draw(); }
+document.getElementById('start').addEventListener('click', ()=>{ if(running) return; score=0; r=16; vx=3; vy=2; t=30; document.getElementById('s').textContent='Score: 0'; document.getElementById('t').textContent='Time: 30'; running=true;
+ loop=setInterval(()=>{ tick(); if(--t<=0){ running=false; clearInterval(loop); document.getElementById('t').textContent='Time: 0'; alert('Time! Your score: '+score);} else { document.getElementById('t').textContent='Time: '+t; } }, 1000/30); });
+</script></body></html>
